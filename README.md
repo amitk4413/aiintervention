@@ -1,27 +1,54 @@
 # AI SDLC Automation
 
-AI-powered solution that converts business requirements into structured Jira Epics and User Stories, and automatically creates Jira tickets.
-
 ## Overview
 
-AI SDLC Automation streamlines the Software Development Life Cycle (SDLC) by leveraging Large Language Models (LLMs) to analyze requirement documents and generate Jira-ready backlog items.
+AI SDLC Automation is an AI-powered application that converts business requirements into structured Jira Epics and User Stories and automatically creates Jira tickets.
 
-The application accepts requirement documents in multiple formats, extracts key business needs, generates Epics and User Stories with acceptance criteria, and optionally pushes them directly into Jira.
+The solution allows users to upload requirement documents in various formats, leverage Large Language Models (LLMs) to analyze the requirements, generate a Jira-ready backlog, and push the generated Epics and Stories directly into Jira.
+
+This helps accelerate the early stages of the Software Development Life Cycle (SDLC) by reducing manual effort involved in requirement analysis and backlog creation.
+
+---
 
 ## Features
 
-* Upload requirement documents (PDF, DOCX, TXT)
-* Extract and analyze business requirements using AI
-* Generate:
+### Requirement Analysis
 
-  * Epics
-  * User Stories
-  * Technical Stories
-  * Acceptance Criteria
-* Organize stories under appropriate Epics
-* Create Jira Epics and Stories automatically
-* Streamlit-based user interface
-* Support for unstructured and layman-language requirements
+* Upload business requirement documents
+* Supports:
+
+  * PDF
+  * DOCX
+  * TXT
+
+### AI-Powered Story Generation
+
+Automatically generates:
+
+* Epics
+* User Stories
+* Acceptance Criteria
+
+### Jira Integration
+
+Automatically creates:
+
+* Jira Epics
+* Jira Stories
+
+inside a configured Jira project.
+
+### Smart Requirement Understanding
+
+The application can understand:
+
+* Formal business requirements
+* Meeting notes
+* Client discussions
+* Layman language requirements
+* Semi-structured requirement documents
+
+---
 
 ## Architecture
 
@@ -32,18 +59,22 @@ Requirement Document
 Document Reader
         │
         ▼
-AI Analysis Engine
+OpenAI LLM Analysis
         │
         ▼
 Structured Jira JSON
         │
-        ├── Display in Streamlit
+        ▼
+Streamlit UI
         │
-        └── Push to Jira
-                │
-                ▼
-          Jira Epics & Stories
+        ▼
+Jira API Integration
+        │
+        ▼
+Jira Epics & Stories
 ```
+
+---
 
 ## Project Structure
 
@@ -52,24 +83,118 @@ ai_agent_sdlc/
 │
 ├── app.py
 ├── llm_structured.py
-│
-├── agents/
-├── crews/
-├── tasks/
-├── tools/
-├── utils/
-│
 ├── requirements.txt
+├── README.md
+├── .gitignore
 ├── .env
-└── README.md
+│
+├── tools/
+│   └── file_reader.py
+│
+└── utils/
+    ├── json_cleaner.py
+    ├── jira_client.py
+    └── jira_uploader.py
 ```
+
+---
+
+## File Descriptions
+
+### app.py
+
+Main Streamlit application.
+
+Responsibilities:
+
+* Upload requirement documents
+* Display extracted text
+* Trigger AI analysis
+* Display generated Jira structure
+* Push Epics and Stories to Jira
+
+---
+
+### llm_structured.py
+
+Core AI processing layer.
+
+Responsibilities:
+
+* Send requirements to OpenAI
+* Generate structured Jira JSON
+* Return Epics, Stories, and Acceptance Criteria
+
+---
+
+### tools/file_reader.py
+
+Document extraction utility.
+
+Responsibilities:
+
+* Read PDF files
+* Read DOCX files
+* Read TXT files
+* Return plain text for AI processing
+
+---
+
+### utils/json_cleaner.py
+
+JSON extraction utility.
+
+Responsibilities:
+
+* Extract valid JSON from LLM responses
+* Repair minor formatting issues
+* Convert AI output into Python dictionaries
+
+---
+
+### utils/jira_client.py
+
+Low-level Jira API integration.
+
+Responsibilities:
+
+* Create Jira Epics
+* Create Jira Stories
+* Handle Jira authentication
+* Send REST API requests
+
+---
+
+### utils/jira_uploader.py
+
+Jira orchestration layer.
+
+Responsibilities:
+
+* Loop through generated Epics
+* Create Epics in Jira
+* Create Stories under corresponding Epics
+
+---
 
 ## Prerequisites
 
+### Software
+
 * Python 3.10+
-* OpenAI API Key
 * Jira Cloud Account
+* OpenAI API Key
+
+### Jira Access
+
+You will need:
+
+* Jira Site URL
+* Jira Email
 * Jira API Token
+* Jira Project Key
+
+---
 
 ## Installation
 
@@ -86,7 +211,7 @@ cd ai_agent_sdlc
 python -m venv .venv
 ```
 
-### Activate Environment
+### Activate Virtual Environment
 
 Windows:
 
@@ -94,7 +219,7 @@ Windows:
 .venv\Scripts\activate
 ```
 
-Linux / Mac:
+Linux / macOS:
 
 ```bash
 source .venv/bin/activate
@@ -106,40 +231,48 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+---
+
 ## Environment Variables
 
 Create a `.env` file in the project root.
 
 ```env
-OPENAI_API_KEY=your_openai_key
+OPENAI_API_KEY=your_openai_api_key
 
 JIRA_BASE_URL=https://your-domain.atlassian.net
-JIRA_EMAIL=your_email@example.com
+JIRA_EMAIL=your-email@example.com
 JIRA_API_TOKEN=your_jira_api_token
 JIRA_PROJECT=KAN
 ```
 
+---
+
 ## Running the Application
+
+Start Streamlit:
 
 ```bash
 streamlit run app.py
 ```
 
-The application will launch in your browser.
+The application will launch automatically in your browser.
+
+---
 
 ## Usage
 
-### Step 1 – Upload Requirement Document
+### Step 1
 
-Upload a:
+Upload a requirement document:
 
 * PDF
 * DOCX
 * TXT
 
-document containing business requirements.
+---
 
-### Step 2 – Generate Jira Structure
+### Step 2
 
 Click:
 
@@ -152,11 +285,13 @@ The AI will:
 * Analyze requirements
 * Identify Epics
 * Generate User Stories
-* Create Acceptance Criteria
+* Generate Acceptance Criteria
 
-### Step 3 – Review Output
+---
 
-Generated Jira structure is displayed as JSON.
+### Step 3
+
+Review the generated Jira structure.
 
 Example:
 
@@ -164,7 +299,7 @@ Example:
 {
   "epics": [
     {
-      "name": "Customer Support Ticketing System",
+      "name": "Ticket Management",
       "stories": [
         {
           "title": "Create Support Tickets",
@@ -176,76 +311,96 @@ Example:
 }
 ```
 
-### Step 4 – Push to Jira
+---
+
+### Step 4
 
 Click:
 
 ```text
-Push to Jira
+Create Jira Tickets
 ```
 
-The application creates:
+The application automatically creates:
 
 * Jira Epics
 * Jira Stories
 
 inside the configured Jira project.
 
-## Supported Requirement Formats
-
-The AI can process:
-
-### Structured Requirements
-
-```text
-As a user, I want...
-```
-
-### Meeting Notes
-
-```text
-Need ticket creation on web and mobile.
-Send notifications when status changes.
-```
-
-### Layman Language
-
-```text
-Customers should be able to raise issues from mobile phones.
-Support team should get notified.
-```
+---
 
 ## Example Use Cases
 
-* Requirement Engineering
-* Agile Backlog Creation
-* Jira Automation
-* Product Discovery Workshops
-* Business Analysis
-* Sprint Planning Preparation
+### Product Owners
+
+Convert requirements into backlog items.
+
+### Business Analysts
+
+Generate user stories from client requirements.
+
+### Scrum Masters
+
+Accelerate sprint planning preparation.
+
+### Development Teams
+
+Reduce manual effort in backlog creation.
+
+---
+
+## Technologies Used
+
+* Python
+* Streamlit
+* OpenAI API
+* Jira REST API
+* Requests
+* Python-Dotenv
+* PyPDF
+* Python-Docx
+
+---
 
 ## Future Enhancements
 
 * Story Point Estimation
-* Sprint Recommendation
-* Priority Assignment
-* Dependency Mapping
+* Sprint Planning Suggestions
+* Priority Classification
+* Dependency Detection
 * Azure DevOps Integration
 * Confluence Integration
-* RAG-based Requirement Analysis
-* Multi-Agent SDLC Workflow
+* Meeting Transcript Analysis
+* Multi-Agent Workflow Support
+* RAG-Based Requirement Analysis
 
-## Demo
+---
 
-The project has been successfully demonstrated with:
+## Demo Outcome
+
+The solution has been successfully demonstrated with:
 
 * Requirement Upload
-* AI Story Generation
+* AI Requirement Analysis
+* User Story Generation
+* Epic Creation
 * Automatic Jira Ticket Creation
 * Kanban Board Population
 
+---
+
+## Security Notes
+
+* Do not commit `.env` files.
+* Do not expose OpenAI API keys.
+* Do not expose Jira API tokens.
+* Add `.env` to `.gitignore`.
+
+---
+
 ## Author
 
-Amit Kumar
+**Amit Kumar**
 
-AI SDLC Automation Prototype
+AI Agent SDLC Framework for enterprise-grade AI solution development and governance.
