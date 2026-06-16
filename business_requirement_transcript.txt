@@ -1,0 +1,56 @@
+Meeting Notes - Product Requirement Discussion
+
+Project: Customer Support Ticketing System Upgrade
+
+Attendees:
+- Product Manager
+- Tech Lead
+- Business Analyst
+
+Discussion Summary:
+
+We need to improve the current customer support system. Users are complaining that ticket creation is slow and they cannot track status easily.
+
+Key Requirements discussed:
+
+1. Users should be able to create support tickets from both web and mobile application.
+
+2. Each ticket must have a unique ticket ID generated automatically.
+
+3. Users should receive email notifications when:
+   - Ticket is created
+   - Ticket status is updated
+   - Ticket is resolved
+
+4. Support agents should be able to assign tickets to different teams based on category:
+   - Billing
+   - Technical
+   - General Inquiry
+
+5. Ticket status should include:
+   - Open
+   - In Progress
+   - Waiting for Customer
+   - Resolved
+   - Closed
+
+6. Users should be able to view ticket history and all previous comments.
+
+7. System should support SLA tracking:
+   - High priority: 4 hours response time
+   - Medium priority: 24 hours
+   - Low priority: 72 hours
+
+8. Dashboard required for support managers showing:
+   - Total tickets
+   - Open vs closed tickets
+   - Average resolution time
+
+9. Login should support email and password authentication.
+
+10. System should allow exporting tickets in CSV format for reporting.
+
+Additional Notes:
+- Mobile app is high priority for Phase 1
+- Performance should support at least 10,000 tickets per day
+- Security and role-based access control is mandatory

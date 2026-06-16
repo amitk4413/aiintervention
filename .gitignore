@@ -38,5 +38,5 @@ build/
 
 # Personal files
 streamlit_run_command.txt
-business_requirement_transcript.txt
+#business_requirement_transcript.txt
 Demo_AI_Agent_SDLC.mp4
